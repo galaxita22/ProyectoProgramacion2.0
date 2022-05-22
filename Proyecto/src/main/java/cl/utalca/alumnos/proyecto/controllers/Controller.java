@@ -11,6 +11,8 @@ import javafx.event.ActionEvent;
 import javafx.scene.control.TextField;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
@@ -20,6 +22,7 @@ public class Controller implements Initializable {
     @FXML
     private TextField textInput;
     public int statusA = 2, statusB = 2, statusParentesis = 0, statusC;
+    public ArrayList<String> text = new ArrayList<>();
 
     @FXML
     public Canvas canvas;
@@ -49,6 +52,7 @@ public class Controller implements Initializable {
     public void ClickNumero (ActionEvent num){
         String numero = ((Button)num.getSource()).getText();
         textInput.setText(textInput.getText()+numero);
+        text.add(numero);
         statusB = statusA;
         statusA = 1;
 
@@ -111,6 +115,7 @@ public class Controller implements Initializable {
         if (statusA != 2){
             String operador = ((Button)oper.getSource()).getText();
             textInput.setText(textInput.getText()+operador);
+            text.add(operador);
             statusB = statusA;
             statusA = 2;
             switch (operador) {
