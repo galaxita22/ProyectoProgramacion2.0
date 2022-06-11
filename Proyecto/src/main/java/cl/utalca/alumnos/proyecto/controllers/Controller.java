@@ -1,5 +1,7 @@
 package cl.utalca.alumnos.proyecto.controllers;
 
+import cl.utalca.alumnos.proyecto.functions.Coords.Coords;
+import cl.utalca.alumnos.proyecto.functions.Draw;
 import cl.utalca.alumnos.proyecto.functions.numbers.Numbers;
 import cl.utalca.alumnos.proyecto.functions.operators.Operators;
 import javafx.fxml.FXML;
@@ -8,11 +10,14 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.event.ActionEvent;
+import javafx.scene.control.ColorPicker;
 import javafx.scene.control.TextField;
+import javafx.scene.paint.Color;
 
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
@@ -25,16 +30,29 @@ public class Controller implements Initializable {
     public ArrayList<String> text = new ArrayList<>();
 
     @FXML
+    private ColorPicker ColorPicker;
+    public static Color currentColor;
+
+    @FXML
     public Canvas canvas;
+    @FXML
+    public Canvas canvasCoordenadas;
+
     private GraphicsContext gc;
+    private GraphicsContext gcCoordenadas;
+    private int ContCoord = 0;
+
 
     public void ClickBorrarTodo (ActionEvent borratodo){
         textInput.setText("");
         statusA = 2;
         statusB = statusA;
         gc.clearRect(0,0,515,313);
+        gcCoordenadas.clearRect(0,0,515,313);
+        ContCoord = 0;
         posX = 0;
         posY =0;
+        text.clear();
     }
 
     /*public void ClickBorrar (ActionEvent borrauno){
@@ -48,6 +66,46 @@ public class Controller implements Initializable {
             //Borrar en canvas
         }
     }*/
+
+    public void ClickCambioColor (ActionEvent cambiocolor){
+        Controller.setColor(ColorPicker.getValue());
+        Color test = ColorPicker.getValue();
+        System.out.println(test);
+
+    }
+    public static void setColor(Color color){
+        currentColor = color;
+    }
+    public static Color getColor(){
+        return currentColor;
+    }
+
+    public void ClickCoordenadas (ActionEvent coord){
+        if(ContCoord == 0){
+            posX = 0;
+            for(int i = 0; i < text.size(); i++){
+                Coords.DrawCoord(text.get(i), gcCoordenadas, posX);
+                posX += 30;
+                ContCoord++;
+            }
+        }
+        else {
+            gcCoordenadas.clearRect(0,0,515,313);
+            //posX = 0;
+            //posY = 0;
+            //for (int i = 0; i < text.size(); i++) {
+            //    if (Objects.equals(text.get(i), "+") || Objects.equals(text.get(i), "-") || Objects.equals(text.get(i), "*") || Objects.equals(text.get(i), "/")) {
+            //        Operators.draw(text.get(i), gc, posX);
+            //    }
+            //    else {
+            //        int num = Integer.parseInt(text.get(i));
+            //        Numbers.draw(num, gc, posX, posY);
+            //    }
+            //    posX += 30;
+            //}
+            ContCoord = 0;
+        }
+    }
 
     public void ClickNumero (ActionEvent num){
         String numero = ((Button)num.getSource()).getText();
@@ -111,6 +169,8 @@ public class Controller implements Initializable {
         }
     }
 
+
+
     public void ClickOperadores (ActionEvent oper){
         if (statusA != 2){
             String operador = ((Button)oper.getSource()).getText();
@@ -168,6 +228,7 @@ public class Controller implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         gc = canvas.getGraphicsContext2D();
+        gcCoordenadas = canvasCoordenadas.getGraphicsContext2D();
     }
 
 }

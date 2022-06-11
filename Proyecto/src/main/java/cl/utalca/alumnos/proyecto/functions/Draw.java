@@ -1,5 +1,6 @@
 package cl.utalca.alumnos.proyecto.functions;
 
+import cl.utalca.alumnos.proyecto.controllers.Controller;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.ArcType;
@@ -10,8 +11,9 @@ public class Draw {
     /*dibujos para num y oper
     la altura está entre 100 y 140*/
 
-    public static void drawNum(GraphicsContext gc, int posX, int posY, String[] numbers ) {
+    public static void drawNum(GraphicsContext gc, int posX, int posY, String[] numbers) {
         gc.beginPath();
+        Color color = Controller.getColor();
 
         // lT AA BB -> lineTo(AA,BB)
         // mT AA BB -> moveTo(AA,BB)
@@ -26,12 +28,13 @@ public class Draw {
             }
         }
 
-        gc.setStroke(Color.DEEPSKYBLUE);
+        gc.setStroke(color);
         gc.stroke();
     }
 
-    public static void drawOper(GraphicsContext gc, int posX, Color color, String[] operators ) {
+    public static void drawOper(GraphicsContext gc, int posX, String[] operators) {
         gc.beginPath();
+        Color color = Controller.getColor();
 
         // lT AA BB -> lineTo(AA,BB)
         // mT AA BB -> moveTo(AA,BB)
